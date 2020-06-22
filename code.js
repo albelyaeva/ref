@@ -1,30 +1,10 @@
-invoice =
-    {
-        "customer": "MDT",
-        "performance": [
-            {
-                "playId": "Гамлет",
-                "audience": 55,
-                "type": "tragedy"
-            },
-            {
-                "playId": "Ромео и Джульетта",
-                "audience": 35,
-                "type": "tragedy"
-            },
-            {
-                "playId": "Отелло",
-                "audience": 40,
-                "type": "comedy"
-            }
-            ]
+const invoices = require('./invoices.json');
 
-    };
+const invoice = invoices[0];
 
 function statement(invoice, plays) {
     let totalAmount = 0;
     let volumeCredits = 0;
-
     let result = `Счет для ${invoice.customer}\n`;
     const format = new Intl.NumberFormat("ru-RU",
         {
@@ -52,11 +32,11 @@ function statement(invoice, plays) {
                 throw new Error(`неизвестный тип: ${play.type}`);
         }
 
-// Добавление бонусов
+        // Добавление бонусов
         volumeCredits += Math.max(perf.audience - 30, 0);
-// Дополнительный бонус за каждые 10 комедий
+        // Дополнительный бонус за каждые 10 комедий
         if (play.type === "comedy") volumeCredits += Math.floor(perf.audience / 10);
-// Вывод строки счета
+        // Вывод строки счета
         result += ` ${play.name}: ${format(thisAmount / 100)}`;
         result += ` (${perf.audience} мест)\n`;
         totalAmount += thisAmount;
